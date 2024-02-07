@@ -1,19 +1,42 @@
-import React, { useState } from "react";
+import { customAmountDonationSchema } from "@/lib/schema";
+import { CustomAmountDonationSchema } from "@/lib/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  FieldValues,
+  FormState,
+  UseFormHandleSubmit,
+  UseFormRegister,
+  useForm,
+} from "react-hook-form";
+
+export type UseCustomAmountDonation = {
+  register: UseFormRegister<{
+    amountToDonate: number;
+  }>;
+  handleSubmit: UseFormHandleSubmit<{
+    amountToDonate: number;
+  }>;
+  formState: FormState<{
+    amountToDonate: number;
+  }>;
+  onSubmit: (data: FieldValues) => Promise<void>;
+};
 
 function useCustomAmountDonation() {
-  const [amountToDonate, setAmountToDonate] = useState<number | string>("");
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
+  const { register, handleSubmit, formState } =
+    useForm<CustomAmountDonationSchema>({
+      resolver: zodResolver(customAmountDonationSchema),
+    });
 
-    if (value === "") return setAmountToDonate("");
-    if (isNaN(Number(value))) return;
+  const onSubmit = async (data: FieldValues) => {
+    await new Promise<FieldValues>((resolve, reject) => {
+      setTimeout(() => {
+        resolve(data);
+      }, 2000);
+    });
+  };
 
-    setAmountToDonate(Number(value));
-  };
-  return {
-    amountToDonate,
-    handleOnChange,
-  };
+  return { register, handleSubmit, formState, onSubmit };
 }
 
 export default useCustomAmountDonation;

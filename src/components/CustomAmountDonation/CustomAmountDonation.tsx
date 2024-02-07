@@ -1,24 +1,28 @@
 "use client";
 import React from "react";
-import { Button } from "@/components/ui/button";
+
+import { Info } from "lucide-react";
+
+import { minimumAmountToDonate } from "@/constants";
 import { Input } from "../ui/input";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
-import { Info } from "lucide-react";
-import { minimumAmountToDonate } from "@/constants";
-
-type CustomAmountDonationProps = {
-  amountToDonate: number | string;
-  handleOnChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-};
+import { Button } from "../ui/button";
+import { cn } from "@/lib/utils";
+import { UseCustomAmountDonation } from "./useCustomAmountDonation";
 
 export function CustomAmountDonation({
   helpers,
 }: {
-  helpers: CustomAmountDonationProps;
+  helpers: UseCustomAmountDonation;
 }) {
-  const { amountToDonate, handleOnChange } = helpers;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    onSubmit,
+  } = helpers;
   return (
-    <div className="flex gap-4 flex-col">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex gap-4 flex-col">
       <span className="flex justify-center text-lg">
         يمكنك التبرع بمبلغ مالي من الحقل التالي
       </span>
@@ -32,16 +36,20 @@ export function CustomAmountDonation({
           اقل قيمة يمكن التبرع بها {minimumAmountToDonate}
         </AlertDescription>
       </Alert>
-      <Input
-        placeholder="المبلغ المالي"
-        className="focus-visible:ring-0  focus-visible:ring-offset-0"
-        value={amountToDonate}
-        onChange={handleOnChange}
-      />
 
-      <Button disabled={!amountToDonate}>
-        دفع {amountToDonate ? amountToDonate : 0} دج
-      </Button>
-    </div>
+      <div className="flex gap-1 flex-col">
+        <Input
+          placeholder="المبلغ المالي"
+          className={cn("focus-visible:ring-0  focus-visible:ring-offset-0", {
+            "border-red-700": errors?.amountToDonate,
+          })}
+          {...register("amountToDonate")}
+        />
+
+        {errors?.amountToDonate && errors?.amountToDonate.message}
+      </div>
+
+      <Button disabled={isSubmitting}>دفع</Button>
+    </form>
   );
 }

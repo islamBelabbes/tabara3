@@ -10,15 +10,9 @@ import {
 } from "react-hook-form";
 
 export type UseCustomAmountDonation = {
-  register: UseFormRegister<{
-    amountToDonate: number;
-  }>;
-  handleSubmit: UseFormHandleSubmit<{
-    amountToDonate: number;
-  }>;
-  formState: FormState<{
-    amountToDonate: number;
-  }>;
+  register: UseFormRegister<CustomAmountDonationSchema>;
+  handleSubmit: UseFormHandleSubmit<CustomAmountDonationSchema>;
+  formState: FormState<CustomAmountDonationSchema>;
   onSubmit: (data: FieldValues) => Promise<void>;
 };
 

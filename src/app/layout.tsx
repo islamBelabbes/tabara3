@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Tajawal } from "next/font/google";
 import "./globals.css";
+import Providers from "@/components/Providers";
 
 const tajawal = Tajawal({
   weight: ["200", "300", "400", "500", "700", "800", "900"],
@@ -20,7 +21,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={tajawal.className}>{children}</body>
+      <body className={tajawal.className}>
+        <Providers>
+          <>{children}</>
+        </Providers>
+      </body>
     </html>
   );
 }

@@ -1,6 +1,4 @@
 import { z } from "zod";
 import { customAmountDonationSchema } from "./schema";
 
-export type CustomAmountDonationSchema = z.infer<
-  typeof customAmountDonationSchema
->;
+export type CustomAmountDonation = z.infer<typeof customAmountDonationSchema>;

@@ -8,17 +8,19 @@ import { Input } from "../ui/input";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
-import { UseCustomAmountDonation } from "./useCustomAmountDonation";
+import { TUseCustomAmountDonation } from "./useCustomAmountDonation";
 
 export function CustomAmountDonation({
   helpers,
 }: {
-  helpers: UseCustomAmountDonation;
+  helpers: TUseCustomAmountDonation;
 }) {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    isSuccess,
+    isPending,
     onSubmit,
   } = helpers;
   return (
@@ -49,7 +51,7 @@ export function CustomAmountDonation({
         {errors?.amountToDonate && errors?.amountToDonate.message}
       </div>
 
-      <Button disabled={isSubmitting}>دفع</Button>
+      <Button disabled={isSubmitting || isSuccess || isPending}>دفع</Button>
     </form>
   );
 }

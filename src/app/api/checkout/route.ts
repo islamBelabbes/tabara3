@@ -1,9 +1,9 @@
 type postProps = (req: Request) => Promise<Response>;
 import createCheckout from "@/lib/chargily";
 export const POST: postProps = async (req) => {
-  const { amount } = await req.json();
+  const { amountToDonate } = await req.json();
 
-  if (!amount && isNaN(Number(amount))) {
+  if (!amountToDonate && isNaN(Number(amountToDonate))) {
     return Response.json(
       {
         message: "please provider a valid amount (int)",
@@ -16,13 +16,13 @@ export const POST: postProps = async (req) => {
   }
 
   try {
-    const order = await createCheckout(amount);
+    const order = await createCheckout(amountToDonate);
 
     return Response.json(
       {
         succuss: true,
         data: {
-          checkourUrl: order?.checkout_url,
+          checkoutUrl: order?.checkout_url,
         },
       },
       {

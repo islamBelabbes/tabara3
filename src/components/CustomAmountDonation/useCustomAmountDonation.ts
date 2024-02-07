@@ -1,36 +1,35 @@
+import { createCheckoutSession } from "@/lib/api";
 import { customAmountDonationSchema } from "@/lib/schema";
-import { CustomAmountDonationSchema } from "@/lib/types";
+import { CustomAmountDonation } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  FieldValues,
-  FormState,
-  UseFormHandleSubmit,
-  UseFormRegister,
-  useForm,
-} from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
-export type UseCustomAmountDonation = {
-  register: UseFormRegister<CustomAmountDonationSchema>;
-  handleSubmit: UseFormHandleSubmit<CustomAmountDonationSchema>;
-  formState: FormState<CustomAmountDonationSchema>;
-  onSubmit: (data: FieldValues) => Promise<void>;
-};
+export type TUseCustomAmountDonation = ReturnType<
+  typeof useCustomAmountDonation
+>;
 
 function useCustomAmountDonation() {
-  const { register, handleSubmit, formState } =
-    useForm<CustomAmountDonationSchema>({
-      resolver: zodResolver(customAmountDonationSchema),
+  const { register, handleSubmit, formState } = useForm<CustomAmountDonation>({
+    resolver: zodResolver(customAmountDonationSchema),
+  });
+  const { mutateAsync, isSuccess, isPending } = useMutation({
+    mutationFn: (data: CustomAmountDonation) =>
+      createCheckoutSession(data.amountToDonate),
+  });
+
+  const onSubmit = async (data: CustomAmountDonation) => {
+    const res = await toast.promise(mutateAsync(data), {
+      error: "حدث خطأ ما",
+      pending: "جاري انشاء جلسة",
+      success: "تم انشاء الجلسة سيتم توجيهك قريبا...",
     });
 
-  const onSubmit = async (data: FieldValues) => {
-    await new Promise<FieldValues>((resolve, reject) => {
-      setTimeout(() => {
-        resolve(data);
-      }, 2000);
-    });
+    window.location.href = res.data.data.checkoutUrl;
   };
 
-  return { register, handleSubmit, formState, onSubmit };
+  return { register, handleSubmit, formState, onSubmit, isSuccess, isPending };
 }
 
 export default useCustomAmountDonation;

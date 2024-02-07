@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "../ui/input";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { Info } from "lucide-react";
+import { minimumAmountToDonate } from "@/constants";
 
 type CustomAmountDonationProps = {
   amountToDonate: number | string;
@@ -28,7 +29,7 @@ export function CustomAmountDonation({
         />
         <AlertTitle className="text-blue-800">معلومة</AlertTitle>
         <AlertDescription className="text-blue-800">
-          اقل قيمة يمكن التبرع بها 500 (50الف)
+          اقل قيمة يمكن التبرع بها {minimumAmountToDonate}
         </AlertDescription>
       </Alert>
       <Input

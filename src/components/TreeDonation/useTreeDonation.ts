@@ -1,5 +1,5 @@
+import { TreeAmount } from "@/constants";
 import React, { useMemo, useState } from "react";
-export const TreeAmount = 2500;
 
 function useTreeDonation() {
   const [treeQty, setTreeQty] = useState<number | string>("");

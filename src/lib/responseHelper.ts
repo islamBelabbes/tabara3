@@ -1,4 +1,8 @@
-export const sendCreated = ({ message, data }) => {
+type responseProps = {
+  message?: string;
+  data?: string | object;
+};
+export const sendCreated = ({ message, data }: responseProps) => {
   return Response.json(
     {
       success: true,
@@ -11,7 +15,7 @@ export const sendCreated = ({ message, data }) => {
   );
 };
 
-export const sendOk = ({ message, data }) => {
+export const sendOk = ({ message, data }: responseProps) => {
   return Response.json(
     {
       success: true,
@@ -24,7 +28,7 @@ export const sendOk = ({ message, data }) => {
   );
 };
 
-export const sendBadRequest = ({ message, data }) => {
+export const sendBadRequest = ({ message, data }: responseProps) => {
   return Response.json(
     {
       success: false,
@@ -37,7 +41,7 @@ export const sendBadRequest = ({ message, data }) => {
   );
 };
 
-export const sendConflict = ({ message }) => {
+export const sendConflict = ({ message }: responseProps) => {
   return Response.json(
     {
       success: false,
@@ -49,7 +53,7 @@ export const sendConflict = ({ message }) => {
   );
 };
 
-export const sendUnauthorized = ({ message }) => {
+export const sendUnauthorized = ({ message }: responseProps) => {
   return Response.json(
     {
       success: false,
@@ -75,7 +79,7 @@ export const sendForbidden = () => {
   );
 };
 
-export const sendNotFound = ({ message }) => {
+export const sendNotFound = ({ message }: responseProps) => {
   return Response.json(
     {
       success: false,
@@ -103,19 +107,4 @@ export const sendNoContent = () => {
   return new Response("no content", {
     status: 200,
   });
-};
-
-export const setHeadersForCORS = (req, next) => {
-  Response.header("Access-Control-Allow-Origin", "*");
-  Response.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, X-Access-Token, Content-Type, Accept"
-  );
-  next();
-};
-
-export const throwUnknown = (callback) => {
-  const newError = new Error("an error occurred");
-  newError.status = 500;
-  callback;
 };

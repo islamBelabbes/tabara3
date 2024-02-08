@@ -15,3 +15,5 @@ export type TDataToDonate = {
   amount: number;
   name: string;
 };
+
+export type customAlertProps = { isOpen: boolean };

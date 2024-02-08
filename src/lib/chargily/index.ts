@@ -1,10 +1,15 @@
 import { Mode, SupportedCurrency, type checkoutProps } from "./type";
 
+const redirectBaseUrl =
+  process.env.NODE_ENV === "production"
+    ? process.env.PAYMENT_REDIRECT_URL
+    : "http://localhost:3000/";
+
 const checkoutConstantParams: Omit<checkoutProps, "amount"> = {
   currency: SupportedCurrency.dzd,
   payment_method: Mode.EDAHABIA,
-  success_url: "http://localhost:3001",
-  failure_url: "http://localhost:3001",
+  success_url: `${redirectBaseUrl}?payment_success=true`,
+  failure_url: `${redirectBaseUrl}?payment_error=true`,
 } as const;
 
 const createCheckout = async (amount: number) => {

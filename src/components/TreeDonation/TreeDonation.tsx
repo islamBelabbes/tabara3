@@ -2,16 +2,23 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "../ui/input";
+import { TUseDonation } from "../../hooks/useDonation";
+import { cn } from "@/lib/utils";
 
-type TreeDonationProps = {
-  total: number;
-  treeQty: number | string;
-  handleOnChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-};
-export function TreeDonation({ helpers }: { helpers: TreeDonationProps }) {
-  const { total, treeQty, handleOnChange } = helpers;
+export function TreeDonation({ helpers }: { helpers: TUseDonation }) {
+  const {
+    formState: { errors },
+    handleSubmit,
+    isPending,
+    isSuccess,
+    onSubmit,
+    register,
+    total,
+  } = helpers;
+
+  const isLoading = isSuccess || isPending;
   return (
-    <div className="flex gap-4 flex-col">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex gap-4 flex-col">
       <span className="flex justify-center text-lg">
         يمكنك التبرع بزراعة عدد من الاشجار
       </span>
@@ -20,18 +27,22 @@ export function TreeDonation({ helpers }: { helpers: TreeDonationProps }) {
         <Input
           placeholder="المبلغ المالي"
           className="focus-visible:ring-0  focus-visible:ring-offset-0 flex-1 flex-grow-[1.8]"
-          value={total}
+          {...register("total")}
           disabled
         />
         <Input
           placeholder="عدد الاشجار"
-          className="focus-visible:ring-0  focus-visible:ring-offset-0 flex-1 "
-          value={treeQty}
-          onChange={handleOnChange}
+          className={cn(
+            "focus-visible:ring-0  focus-visible:ring-offset-0 flex-1",
+            {
+              "border-red-700": errors?.qty,
+            }
+          )}
+          {...register("qty")}
         />
       </div>
-
-      <Button disabled={!total}>دفع {total} دج</Button>
-    </div>
+      {errors?.qty && errors?.qty.message}
+      <Button disabled={isLoading}>دفع {total} دج</Button>
+    </form>
   );
 }

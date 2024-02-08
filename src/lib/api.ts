@@ -1,12 +1,10 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
+import { type TCreateCheckoutSession } from "./types";
 
-type CreateCheckoutSession = (
-  amountToDonate?: number
-) => Promise<AxiosResponse>;
-
-export const createCheckoutSession: CreateCheckoutSession = async (
-  amountToDonate
+export const createCheckoutSession: TCreateCheckoutSession = async (
+  endpoint,
+  data
 ) => {
-  const res = await axios.post("/api/checkout", { amountToDonate });
+  const res = await axios.post(`/api/${endpoint}`, data);
   return res;
 };

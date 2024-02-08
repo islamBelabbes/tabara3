@@ -15,6 +15,9 @@ export const customAmountDonationSchema = z.object({
 });
 
 export const donationSchema = z.object({
+  id: z.coerce.number({
+    invalid_type_error: "المرجو ارفاق id",
+  }),
   qty: z.coerce
     .number({
       invalid_type_error: "المرجو ادخال كمية صحيحة",

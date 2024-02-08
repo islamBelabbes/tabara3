@@ -11,7 +11,7 @@ export type TUseDonation = ReturnType<typeof useDonation>;
 function useDonation(amount: number) {
   const { register, handleSubmit, formState, watch, setValue, getValues } =
     useForm<TTreeDonation & { total: number | string }>({
-      resolver: zodResolver(donationSchema),
+      resolver: zodResolver(donationSchema.omit({ id: true })),
     });
   const { mutateAsync, isSuccess, isPending } = useMutation({
     mutationFn: (data: TTreeDonation) => {

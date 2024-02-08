@@ -14,16 +14,29 @@ function DonationForm() {
   const treeDonationHelpers = useDonation(TreeAmount);
   const customAmountDonationHelpers = useCustomAmountDonation();
 
+  const isLoading =
+    treeDonationHelpers.isPending ||
+    customAmountDonationHelpers.isPending ||
+    treeDonationHelpers.isSuccess ||
+    customAmountDonationHelpers.isSuccess;
   // if we had db we should check if order id has already showed redirect alert
   const { get } = useSearchParams();
 
   return (
     <Tabs dir="rtl" defaultValue="treeDonation" className="w-[400px]">
       <TabsList className="w-full rounded-b-none">
-        <TabsTrigger value="treeDonation" className="flex-1">
+        <TabsTrigger
+          value="treeDonation"
+          className="flex-1"
+          disabled={isLoading}
+        >
           تبرع بشجرة
         </TabsTrigger>
-        <TabsTrigger value="CustomAmountDonation" className="flex-1">
+        <TabsTrigger
+          value="CustomAmountDonation"
+          className="flex-1"
+          disabled={isLoading}
+        >
           تبرع بمبلغ مالي
         </TabsTrigger>
       </TabsList>

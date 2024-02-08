@@ -1,4 +1,4 @@
-import { Mode, SupportedCurrency, type checkoutProps } from "./type";
+import { Mode, SupportedCurrency, type checkoutProps } from "./types";
 
 const redirectBaseUrl =
   process.env.NODE_ENV === "production"

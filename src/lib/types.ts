@@ -1,11 +1,17 @@
 import { z } from "zod";
-import { customAmountDonationSchema, treeDonationSchema } from "./schema";
+import { customAmountDonationSchema, donationSchema } from "./schema";
 import { type AxiosResponse } from "axios";
 
 export type TCustomAmountDonation = z.infer<typeof customAmountDonationSchema>;
-export type TTreeDonation = z.infer<typeof treeDonationSchema>;
+export type TTreeDonation = z.infer<typeof donationSchema>;
 
 export type TCreateCheckoutSession = (
   endpoint: "/donate/custom" | "/donate",
-  data: { amountToDonate: number } | { qty: number }
+  data: { amountToDonate: number }
 ) => Promise<AxiosResponse>;
+
+export type TDataToDonate = {
+  id: number;
+  amount: number;
+  name: string;
+};

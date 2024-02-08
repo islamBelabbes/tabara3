@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { Suspense } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TreeDonation } from "./TreeDonation/TreeDonation";
 import { CustomAmountDonation } from "./CustomAmountDonation/CustomAmountDonation";
@@ -11,16 +11,11 @@ import { useSearchParams } from "next/navigation";
 
 const TreeAmount = 2500;
 function DonationForm() {
-  const [isMounted, setIsMounted] = useState(false);
   const treeDonationHelpers = useDonation(TreeAmount);
   const customAmountDonationHelpers = useCustomAmountDonation();
 
   // if we had db we should check if order id has already showed redirect alert
   const { get } = useSearchParams();
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, [isMounted]);
 
   return (
     <Tabs dir="rtl" defaultValue="treeDonation" className="w-[400px]">
@@ -46,12 +41,8 @@ function DonationForm() {
         <CustomAmountDonation helpers={customAmountDonationHelpers} />
       </TabsContent>
 
-      {isMounted && (
-        <>
-          <PaymentSuccessAlert isOpen={Boolean(get("payment_success"))} />
-          <PaymentErrorAlert isOpen={Boolean(get("payment_error"))} />
-        </>
-      )}
+      <PaymentSuccessAlert isOpen={Boolean(get("payment_success"))} />
+      <PaymentErrorAlert isOpen={Boolean(get("payment_error"))} />
     </Tabs>
   );
 }

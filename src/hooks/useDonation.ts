@@ -1,6 +1,6 @@
 import { createCheckoutSession } from "@/lib/api";
 import { donationSchema } from "@/lib/schema";
-import { TTreeDonation } from "@/lib/types";
+import { TDonation } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect } from "react";
@@ -10,18 +10,18 @@ import { toast } from "react-toastify";
 export type TUseDonation = ReturnType<typeof useDonation>;
 function useDonation(amount: number) {
   const { register, handleSubmit, formState, watch, setValue, getValues } =
-    useForm<TTreeDonation & { total: number | string }>({
+    useForm<TDonation & { total: number | string }>({
       resolver: zodResolver(donationSchema.omit({ id: true })),
     });
   const { mutateAsync, isSuccess, isPending } = useMutation({
-    mutationFn: (data: TTreeDonation) => {
+    mutationFn: (data: TDonation) => {
       return createCheckoutSession("/donate/custom", {
         amountToDonate: data.qty * amount,
       });
     },
   });
 
-  const onSubmit = async (data: TTreeDonation) => {
+  const onSubmit = async (data: TDonation) => {
     const res = await toast.promise(mutateAsync(data), {
       error: "حدث خطأ ما",
       pending: "جاري انشاء جلسة",

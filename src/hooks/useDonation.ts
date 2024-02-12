@@ -9,14 +9,16 @@ import { toast } from "react-toastify";
 
 export type TUseDonation = ReturnType<typeof useDonation>;
 function useDonation(amount: number) {
-  const { register, handleSubmit, formState, watch, setValue, getValues } =
-    useForm<TDonation & { total: number | string }>({
-      resolver: zodResolver(donationSchema.omit({ id: true })),
-    });
+  const { register, handleSubmit, formState, watch, setValue } = useForm<
+    TDonation & { total: number | string }
+  >({
+    resolver: zodResolver(donationSchema),
+  });
   const { mutateAsync, isSuccess, isPending } = useMutation({
     mutationFn: (data: TDonation) => {
-      return createCheckoutSession("/donate/custom", {
-        amountToDonate: data.qty * amount,
+      return createCheckoutSession("/donate", {
+        id: data.id,
+        qty: data.qty,
       });
     },
   });

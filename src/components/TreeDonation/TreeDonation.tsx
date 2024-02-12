@@ -31,6 +31,13 @@ export function TreeDonation({ helpers }: { helpers: TUseDonation }) {
           disabled
         />
         <Input
+          placeholder="الرقم التسلسلي"
+          className="focus-visible:ring-0  focus-visible:ring-offset-0 flex-1 flex-grow-[1.8]"
+          {...register("id", { value: 1 })}
+          type="hidden"
+          disabled
+        />
+        <Input
           placeholder="عدد الاشجار"
           className={cn(
             "focus-visible:ring-0  focus-visible:ring-offset-0 flex-1",

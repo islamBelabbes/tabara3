@@ -7,7 +7,11 @@ export type TDonation = z.infer<typeof donationSchema>;
 
 export type TCreateCheckoutSession = (
   endpoint: "/donate/custom" | "/donate",
-  data: { amountToDonate: number }
+  data: {
+    amountToDonate?: number;
+    qty?: number;
+    id?: number;
+  }
 ) => Promise<AxiosResponse>;
 
 export type TDataToDonate = {

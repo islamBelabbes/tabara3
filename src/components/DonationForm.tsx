@@ -1,5 +1,5 @@
 "use client";
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TreeDonation } from "./TreeDonation/TreeDonation";
 import { CustomAmountDonation } from "./CustomAmountDonation/CustomAmountDonation";
@@ -11,6 +11,7 @@ import { useSearchParams } from "next/navigation";
 
 const TreeAmount = 2500;
 function DonationForm() {
+  const [isMounted, setIsMounted] = useState(false);
   const treeDonationHelpers = useDonation(TreeAmount);
   const customAmountDonationHelpers = useCustomAmountDonation();
 
@@ -22,6 +23,11 @@ function DonationForm() {
   // if we had db we should check if order id has already showed redirect alert
   const { get } = useSearchParams();
 
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) return;
   return (
     <Tabs dir="rtl" defaultValue="treeDonation" className="w-[400px]">
       <TabsList className="w-full rounded-b-none">
